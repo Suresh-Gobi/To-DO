@@ -11,13 +11,12 @@ export default function CreateTask() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (task.trim() && description.trim()) {
-      dispatch(createTask({ title: task, description })); // Include both title and description
-      setTask(""); // Clear input
-      setDescription(""); // Clear description
+      dispatch(createTask({ title: task, description }));
+      setTask("");
+      setDescription("");
     }
   };
   
-
   return (
     <Container maxWidth="sm">
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 4 }}>
