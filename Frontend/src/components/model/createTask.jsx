@@ -1,30 +1,22 @@
 import React, { useState } from "react";
-import { TextField, Button, Container, Typography, Box, FormControlLabel, Checkbox } from "@mui/material";
-import axios from "axios";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { createTask } from "../../redux/taskSlice";
 
-export default function CreateTask({ fetchTasks }) {
-  const [title, setTitle] = useState("");
+export default function CreateTask() {
+  const [task, setTask] = useState("");
   const [description, setDescription] = useState("");
-  const [completed, setCompleted] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.trim()) {
-      try {
-        await axios.post("http://localhost:5000/api/add", { 
-          title, 
-          description, 
-          completed 
-        });
-        setTitle(""); // Clear inputs
-        setDescription("");
-        setCompleted(false);
-        fetchTasks(); // Refresh task list
-      } catch (error) {
-        console.error("Error adding task:", error);
-      }
+    if (task.trim() && description.trim()) {
+      dispatch(createTask({ title: task, description })); // Include both title and description
+      setTask(""); // Clear input
+      setDescription(""); // Clear description
     }
   };
+  
 
   return (
     <Container maxWidth="sm">
@@ -36,21 +28,17 @@ export default function CreateTask({ fetchTasks }) {
           label="Task Title"
           variant="outlined"
           fullWidth
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
         />
         <TextField
-          label="Description"
+          label="Task Description"
           variant="outlined"
           fullWidth
           multiline
           rows={3}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-        />
-        <FormControlLabel
-          control={<Checkbox checked={completed} onChange={(e) => setCompleted(e.target.checked)} />}
-          label="Completed"
         />
         <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
           Add Task
