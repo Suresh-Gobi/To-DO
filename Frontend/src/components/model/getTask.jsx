@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTasks } from "../../redux/taskSlice";
-import { Card, CardContent, Typography, Container, Grid, Button, CircularProgress, Box } from "@mui/material";
+import { fetchTasks, updateTask } from "../../redux/taskSlice";
+import { Card, CardContent, Typography, Container, Grid, Button, CircularProgress } from "@mui/material";
 
 export default function TaskList() {
   const dispatch = useDispatch();
@@ -10,6 +10,10 @@ export default function TaskList() {
   useEffect(() => {
     dispatch(fetchTasks());
   }, [dispatch]);
+
+  const handleComplete = (taskId) => {
+    dispatch(updateTask(taskId)); // Marks task as completed and removes from UI
+  };
 
   if (loading) {
     return <CircularProgress />;
@@ -20,26 +24,30 @@ export default function TaskList() {
   }
 
   return (
-<Container maxWidth="md">
+    <Container maxWidth="md">
       <Typography variant="h4" gutterBottom>
         Task List
       </Typography>
       <Grid container spacing={2} direction="column">
-        {tasks.map((task) => (
-          <Grid item key={task.id}>
-            <Card sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 2, boxShadow: 3 }}>
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6">{task.title}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {task.description}
-                </Typography>
-              </CardContent>
-              <Button variant="outlined" color="primary">
-                Done
-              </Button>
-            </Card>
-          </Grid>
-        ))}
+        {tasks.length === 0 ? (
+          <Typography variant="body1">No tasks available</Typography>
+        ) : (
+          tasks.map((task) => (
+            <Grid item key={task.id}>
+              <Card sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 2, boxShadow: 3 }}>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6">{task.title}</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {task.description}
+                  </Typography>
+                </CardContent>
+                <Button variant="outlined" color="primary" onClick={() => handleComplete(task.id)}>
+                  Done
+                </Button>
+              </Card>
+            </Grid>
+          ))
+        )}
       </Grid>
     </Container>
   );

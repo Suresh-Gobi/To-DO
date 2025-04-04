@@ -15,10 +15,16 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
 
 // Create task
 export const createTask = createAsyncThunk("tasks/createTask", async ({ title, description }) => {
-    const response = await axios.post("http://localhost:5000/api/add", { title, description });
-    return response.data;
-  });
-  
+  const response = await axios.post("http://localhost:5000/api/add", { title, description });
+  return response.data;
+});
+
+// Update (Mark as completed)
+export const updateTask = createAsyncThunk("tasks/updateTask", async (taskId) => {
+  await axios.put(`http://localhost:5000/api/${taskId}/complete`);
+  return taskId;
+});
+
 
 // Task slice
 const taskSlice = createSlice({
@@ -40,6 +46,9 @@ const taskSlice = createSlice({
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.tasks.push(action.payload);
+      })
+      .addCase(updateTask.fulfilled, (state, action) => {
+        state.tasks = state.tasks.filter((task) => task.id !== action.payload);
       });
   },
 });
