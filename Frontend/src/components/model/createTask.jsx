@@ -21,7 +21,7 @@ export default function CreateTask() {
     <Container maxWidth="sm">
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 4 }}>
         <Typography variant="h5" gutterBottom>
-          Create Task
+          Add a Task
         </Typography>
         <TextField
           label="Task Title"
@@ -40,7 +40,7 @@ export default function CreateTask() {
           onChange={(e) => setDescription(e.target.value)}
         />
         <Button variant="contained" color="primary" fullWidth onClick={handleSubmit}>
-          Add Task
+          Add
         </Button>
       </Box>
     </Container>

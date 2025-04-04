@@ -12,7 +12,7 @@ export default function TaskList() {
   }, [dispatch]);
 
   const handleComplete = (taskId) => {
-    dispatch(updateTask(taskId)); // Marks task as completed and removes from UI
+    dispatch(updateTask(taskId));
   };
 
   if (loading) {
@@ -25,9 +25,6 @@ export default function TaskList() {
 
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
-        Task List
-      </Typography>
       <Grid container spacing={2} direction="column">
         {tasks.length === 0 ? (
           <Typography variant="body1">No tasks available</Typography>
